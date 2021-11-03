@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
-    public static final int COUNT = 10;
-    private static final int pairCount = 1;
+    public static final int COUNT = 100;
+    private static final int pairCount = 5;
 
     public static void main(String[] args) throws InterruptedException {
         Waiter monitor = new Waiter(pairCount);
@@ -20,7 +20,6 @@ public class Main {
         }
         for(Thread t : threads) {
             t.join();
-            System.out.println("joined");
         }
     }
 }

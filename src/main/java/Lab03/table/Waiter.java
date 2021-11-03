@@ -5,16 +5,20 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Waiter {
-    private final int[] reservations;
-
     private final Lock lock = new ReentrantLock();
     private final Condition tableFree = lock.newCondition();
     private final Condition[] pairSignaling;
 
-    private int tableTakenBy = -1;
+    private final boolean[] waitingForPair;
+    private final boolean[] readyToEat;
+    private final boolean[] partnerLeft;
+
+    private int tableTakenBy = -1; // -1 -> the table is free
 
     public Waiter(int pairCount) {
-        reservations = new int[pairCount];
+        waitingForPair = new boolean[pairCount];
+        readyToEat = new boolean[pairCount];
+        partnerLeft = new boolean[pairCount];
         pairSignaling = new Condition[pairCount];
         for (int i = 0; i < pairCount; i++) {
             pairSignaling[i] = lock.newCondition();
@@ -23,40 +27,52 @@ public class Waiter {
 
     public void reserve(int i) throws InterruptedException {
         lock.lock();
-        System.out.println("Client from pair " + i + " has requested the table.");
-        ++reservations[i];
-        if (reservations[i] != 2) {
-            while (reservations[i] != 2) {
-                System.out.println(0 + " waiting for pair.");
+
+        // Waiting for partner
+        if (!waitingForPair[i]) {
+            System.out.println("Client from pair " + i + " requested the table.");
+            waitingForPair[i] = true;
+            while (waitingForPair[i]) {
                 pairSignaling[i].await();
             }
-            System.out.println("done waiting");
-        } else if (reservations[i] == 2) {
+        } else {
+            waitingForPair[i] = false;
             pairSignaling[i].signal();
-            System.out.println("Clients from pair " + i + " can be assigned the table.");
+            System.out.println("Client from pair " + i + " also requested the table.");
         }
+
+        // Waiting for free table
         while (tableTakenBy != -1 && tableTakenBy != i) {
-            System.out.println("bad");
             tableFree.await();
         }
-        System.out.println("done bad");
-        System.out.println("The table is taken by pair " + i);
         tableTakenBy = i;
+
+        // Eating together
+        if (!readyToEat[i]) {
+            System.out.println("The table is taken by pair " + i + ".");
+            readyToEat[i] = true;
+            while (readyToEat[i]) {
+                pairSignaling[i].await();
+            }
+        } else {
+            readyToEat[i] = false;
+            pairSignaling[i].signal();
+            System.out.println("Pair " + i + " is eating.");
+        }
         lock.unlock();
     }
 
     public void release() {
         lock.lock();
-        System.out.println("releasing");
-        // This is to prevent the situation where one client goes away and then returns before the other one had the chance to leave the table
-        if(reservations[tableTakenBy] == 2) {
-            reservations[tableTakenBy] = -2;
-        }
-        System.out.println("Client from pair " + tableTakenBy + " left the table.");
-        if (++reservations[tableTakenBy] >= 0) {
+        if (partnerLeft[tableTakenBy]) {
+            System.out.println("Client from pair " + tableTakenBy + " left the table last.");
+            partnerLeft[tableTakenBy] = false;
             tableTakenBy = -1;
             System.out.println("The table got freed.");
             tableFree.signalAll();
+        } else {
+            System.out.println("Client from pair " + tableTakenBy + " left the table first.");
+            partnerLeft[tableTakenBy] = true;
         }
         lock.unlock();
     }
