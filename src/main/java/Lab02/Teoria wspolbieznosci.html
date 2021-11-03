@@ -1,0 +1,92 @@
+
+<!-- saved from url=(0047)https://home.agh.edu.pl/~kzajac/dydakt/tw/lab2/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="GENERATOR" content="vi">
+<title>Teoria wspolbieznosci</title>
+</head>
+
+<body class="vsc-initialized">
+
+
+<h3>Laboratorium 2 - semafory</h3>
+<ul>
+<li>Semafor to mechanizm synchronizacji procesów  zaproponowany 
+przez Dijkstrę.
+<p>
+</p></li><li> Semafor jest zmienną całkowitą, która 
+przyjmuje wartości nieujemne (≥0) lub — w 
+przypadku semaforów binarnych — logiczne. 
+Zmienna semaforowa musi mieć 
+nadaną początkową wartość (nieujemną).
+<p>
+</p></li><li>
+Po nadaniu początkowej wartości zmiennej semaforowej można na niej 
+wykonywać tylko dwa rodzaje operacji:
+<ol>
+<li><b>P — opuszczanie semafora (hol. proberen)</b>,
+powoduje zmniejszenie wartości zmiennej 
+semaforowej, 
+
+</li><li><b>V — podnoszenie semafora (hol. verhogen)</b>.
+powoduje zwiekszanie wartości zmiennej 
+semaforowej. 
+</li></ol>
+<p>
+</p></li><li>Wykonując operację semaforową, 
+proces może zastać zablokowany (przejść w stan oczekiwania). Typowym 
+przypadkiem jest blokowanie w operacji opuszczania semafora. Operacja 
+opuszczania nie zakończy się do czasu, aż wartość zmiennej semaforowej 
+będzie na tyle duża, że 
+zmniejszenie jej wartości w wyniku tej operacji nie spowoduje przyjęcia 
+wartości ujemnej. 
+<p>
+</p></li><li>Rodzaje semaforów
+<ol>
+<li><b> semafor binarny </b>ma dwa stany: true 
+(podniesiony otwarty) i false (opuszczony zamknięty). Wielokrotne 
+podnoszenie takiego semafora nie zmieni jego stanu — skutkiem będzie stan 
+otwarcia. W niektórych rozwiązaniach przyjmuje się, że próba podniesienia 
+otwartego semafora sygnalizowana jest błędem.
+
+</li><li><b>semafor ogólny</b> „pamięta” 
+liczbę 
+operacji podniesienia. Zwykle inicjalizowany jest iloscia dostępnego 
+zasobu. Można bez
+blokowania procesu wykonać tyle operacji opuszczenia semafora, aby 
+jego wartość była nieujemna.
+
+</li></ol>
+
+</li><li>Zadanie
+<ul>
+<li>zaimplementowac <a href="https://home.agh.edu.pl/~kzajac/dydakt/tw/lab2/sem.html">semafor binarny</a> za pomoca metod 
+wait i notify/notifyall, uzyc go 
+do synchronizacji wyscigu z poprzedniego laboratorium.
+</li><li> zaimplementowac <a href="https://home.agh.edu.pl/~kzajac/dydakt/tw/lab2/sem.html"> semafor licznikowy (ogolny) </a> za 
+pomoca metod  wait i notify/notifyall. 
+Przetestowac semafor na prostej symulacji sklepu samoobsługowego z 
+ograniczoną ilością koszyków. 
+   </li></ul>
+</li></ul>
+   
+<h3>Bibliografia</h3>
+
+<ol>
+<li>Z Weiss, T Gruźlewski "Programowanie współbieżne i rozproszone w 
+przykładach i zadaniach"
+</li></ol>
+ <p> </p><p> </p><hr>
+<i>Katarzyna Rycerz, kzajac at agh.edu.pl</i>
+<p>
+(takze na  postawie opracowan dr B. Balisia)
+</p><p> </p><p>
+
+
+
+
+
+
+
+
+</p></body></html>

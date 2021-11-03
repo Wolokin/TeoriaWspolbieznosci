@@ -1,0 +1,105 @@
+
+<!-- saved from url=(0047)https://home.agh.edu.pl/~kzajac/dydakt/tw/lab3/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Teoria wspolbieznosci</title>
+</head>
+<body class="vsc-initialized">
+
+
+
+<h2>Laboratorium 3 </h2>
+<ul>
+<li> W języku java istnieja również nowsze (bardziej elastyczne) 
+mechanizmy synchronizacji,
+zaimplementowane
+w pakiecie 
+<a href="http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/locks/package-summary.html"> 
+java.util.concurrent.locks </a>
+
+</li><li> W zadaniach nalezy użyc tego mechanizmu. Nalezy  
+korzystac z<i> 
+ lock, condition, await, signal</i>
+</li></ul>
+   <ol>
+<li> Przeanalizuj i przetestuj na swoich producentach i konsumentach 
+ monitor 
+<a href="http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/locks/Condition.html"> 
+ BoundedBuffer </a>
+przeznaczony dla
+producentow i konsumentow.
+   </li><li> <b>Drukarki</b>
+<br>
+Grupa wątków P (ilosc N) korzysta z M drukarek N&gt;M.
+Dzialanie wątku
+<pre>forever{
+  Utworz_zadanie_do_druku();
+  nr_drukarki=Monitor_Drukarek.zarezerwuj();
+  drukuj(nr_drukarki);
+  Monitor_Drukarek.zwolnij(nr_drukarki);
+}
+</pre>
+
+Napisz monitor  Monitor_Drukarek. 
+<p>
+</p></li><li><b>Stolik dwuosobowy</b>
+<br>
+Napisz monitor Kelner sterujacy dostepem do stolika dwuosobowego. Ze 
+stolika korzysta N par osob. Algorytm osoby z pary o numerze j:
+<code>
+<pre>forever{
+  wlasne sprawy;
+  Kelner.chce_stolik(j);
+  jedzenie;
+  Kelner.zwalniam();
+}
+</pre>
+</code>
+Stolik jest przydzielany  parze w momencie gdy obydwie osoby tego zazadaja, zwalnianie nie musi byc jednoczesne.
+<p>
+<!--
+<li> <b>Lotniskowiec</b>
+<br>
+Lotniskowiec ma poklad o pojemnosci N samolotow oraz pas 
+startowy. 
+Pas startowy jest konieczny do startowania i ladowania samolotow, a moze z 
+niego korzystac w danej chwili tylko jeden samolot. Gdy liczba samolotow 
+na lotniskowcu jest mniejsza niz K (K jest liczba naturalna z 
+przedzialu 0 do N), prorytet w dostepie do pasa 
+startowego maja samoloty ladujace w przeciwnym razie startujace. 
+Samolotow moze byc wiecej niz N, wowczas 
+ich czesc jest zawsze w powietrzu. Ladowanie i startowanie trwaja na tyle 
+dlugo, ze musza byc na zewnatrz monitora.
+Samolot funkcjonuje wedlug schematu 
+lot-ladowanie-postoj-start: 
+<code>
+<pre>
+forever{
+  lot();
+  Lotniskowiec.chce_ladowac();
+  ladowanie();
+  Lotniskowiec.wyladowalem();
+  postoj();
+  Lotniskowiec.chce_startowac();
+  start();
+  Lotniskowiec.wystartowalem();
+}
+</pre>
+</code>
+Napisz monotor Lotniskowiec.
+-->
+ </p></li></ol>
+<h4> Literatura</h4>
+<img width="10%" src="./Teoria-wspolbieznosci_files/czerwonaksiazeczka.jpg">
+
+<p> </p><p>
+</p><hr>
+<i>Katarzyna Rycerz, kzajac at agh.edu.pl</i>
+<hr>
+<p> </p><p>
+
+
+
+
+
+</p></body></html>
