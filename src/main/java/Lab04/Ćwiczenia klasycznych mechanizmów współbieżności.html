@@ -1,0 +1,109 @@
+
+<!-- saved from url=(0047)https://home.agh.edu.pl/~kzajac/dydakt/tw/lab4/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<link rel="stylesheet" href="./Ćwiczenia klasycznych mechanizmów współbieżności_files/stylesheet.css">
+<title>Ćwiczenia klasycznych mechanizmów współbieżności</title>
+</head>
+
+<body class="vsc-initialized">
+<h3> Producenci i konsumenci - ciekawe warianty </h3>
+<p>
+Należy rozwiązać oba zadania 
+za pomocą semaforów lub monitorów (do wyboru) dostępnych w języku Java.
+Można korzystać z :
+</p><ul>
+<li> mechanizmu monitorów synchronized, wait, notify
+</li><li> mechanizmu lock, await, signal
+</li><li> mechanizmu 
+semaforow  własnych 
+bądz  z  pakietu 
+<a href="https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Semaphore.html">
+java.util 
+concurrent </a>
+</li><li> <font color="FF0000"> 
+W implementacji nie jest dozwolone korzystanie/implementowanie własnych 
+kolejek FIFO, należy 
+używac tylko
+mechanizmu monitorow lub semaforow !</font>
+</li></ul>
+<p>
+</p><h3> Zadania</h3>
+<ol>
+<li><b>Przetwarzanie potokowe z buforem</b>
+<ul>
+   <li>Bufor o rozmiarze N <font color="FF0000"> - wspólny dla wszystkich 
+procesow! </font>
+   </li><li>Proces A będacy producentem.
+   </li><li>Proces Z będacy konsumentem.
+   </li><li>Procesy B, C, ..., Y będace procesami przetwarzajacymi. Każdy 
+proces otrzymuje daną wejściową od procesu
+       poprzedniego, jego wyjscie zas jest konsumowane przez proces 
+następny.
+   </li><li> <font color="FF0000"> Procesy przetwarzają dane
+w miejscu, po czym przechodzą do kolejnej komórki bufora i znowu 
+przetwarzają
+ją w miejscu.</font>
+   </li><li>Procesy dzialają z różnymi prędkościami.
+</li></ul>
+
+Zaimplementować rozwiązanie przetwarzania potokowego 
+(Przykładowe załozenia: bufor rozmiaru 100, 1 producent, 1 konsument,
+    5 uszeregowanych procesów przetwarzających.) 
+Od czego zależy prędkość obróbki w tym systemie ? 
+Rozwiązanie za pomocą semaforów lub monitorów (dowolnie)
+
+<p>
+</p></li><li><b> Producenci i konsumenci  z losową iloscią pobieranych i 
+wstawianych porcji</b>
+<ul>
+<li>Bufor moze pomiescic 2M nierozróżnialnych elementow (kolejnosc nie 
+istotna)
+</li><li> Jest wielu producentów i konsumentów
+</li><li>Producent wstawia do bufora losową liczbę elementów (nie wiecej niz M)
+</li><li> Konsument pobiera losową liczbę elementów (nie wiecej niz M)
+</li></ul>
+<p>
+Wyjasnić po co  zalozenie o M. 
+</p><p>
+Zaimplementować rozwiązanie z losową liczbą porcji w dwóch wariantach:
+</p><ul>
+ <li>   Wariant naiwny: producent / konsument jest wstrzymywany aż w 
+buforze 
+nie będzie wystarczająco dużo miejsca / elementów.
+ </li><li>   Wariant sprawiedliwy: zapobiega zagłodzeniu procesów produkujących 
+lub konsumujących duże porcje. Wymyślić własne (NIE używać prorytetów!), 
+bądź użyć rozwiązania 
+według 
+[1]
+</li></ul>
+<p>
+Proszę uruchomić obydwa warianty algorytmu dla wielu producentów i 
+konsumentów, a następnie zmierzyć i przedstawić na wykresie porównawczym 
+(osobno dla producentów i konsumentów) średni czas  
+oczekiwania na dostęp 
+do bufora w zależności od wielkości porcji (czas metod put() i get()).
+
+</p><p>
+Uwagi:
+</p><ul>
+ <li>   Producenci i konsumenci losują wielkość porcji przed każdą 
+operacją.
+ </li><li>   Każda wielkość porcji 
+jest losowana z równym prawdopodobieństwem;
+  </li><li>  Do pomiaru czasu proszę używać System.nanoTime()
+  </li><li>  Przykladowy zestaw testow:
+        M  rowne  1000,  10k, 100k
+        Konfiguracji P-K: 10P+10K, 100P+100K, 1000P+1000K 
+</li></ul>
+<p>
+[1] Problemy pochodzą z książki Z. Weiss, T. Gruzlewski, Programowanie 
+wspolbiezne i rozproszone.
+
+
+</p><p>
+</p></li></ol>
+
+
+
+</body></html>
