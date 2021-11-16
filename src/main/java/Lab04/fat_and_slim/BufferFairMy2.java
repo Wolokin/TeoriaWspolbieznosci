@@ -3,26 +3,31 @@ package Lab04.fat_and_slim;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class BufferFairMy implements IBuffer {
+public class BufferFairMy2 implements IBuffer {
     private int buffer = 0;
     private final int bufferSize;
 
     private final ReentrantLock lock = new ReentrantLock();
+    private final DualGate putGate = new DualGate(lock.newCondition(), lock.newCondition());
+    private final DualGate getGate = new DualGate(lock.newCondition(), lock.newCondition());
     private final Condition bufferHasSpace = lock.newCondition();
     private final Condition bufferHasObjects = lock.newCondition();
 
-    public BufferFairMy(int bufferSize) {
+    public BufferFairMy2(int bufferSize) {
         this.bufferSize = bufferSize;
     }
 
     public void put(int val) throws InterruptedException {
         try {
             lock.lock();
+            putGate.go();
             while (buffer + val > bufferSize) {
                 bufferHasSpace.await();
             }
             buffer += val;
-//            System.out.println("put "+ val);
+            if(!lock.hasWaiters(bufferHasSpace)) {
+                putGate.open();
+            }
             signal();
         }
         finally {
@@ -33,11 +38,14 @@ public class BufferFairMy implements IBuffer {
     public void get(int val) throws InterruptedException {
         try {
             lock.lock();
+            getGate.go();
             while (buffer < val) {
                 bufferHasObjects.await();
             }
             buffer -= val;
-//            System.out.println("get "+ val);
+            if(!lock.hasWaiters(bufferHasObjects)) {
+                getGate.open();
+            }
             signal();
         }
         finally {

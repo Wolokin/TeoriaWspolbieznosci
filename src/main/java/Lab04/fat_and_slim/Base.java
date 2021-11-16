@@ -24,7 +24,8 @@ public abstract class Base implements Runnable {
             try {
                 doStuff(size);
             } catch (InterruptedException e) {
-//                e.printStackTrace();
+                long stop = System.nanoTime();
+                statCollector.add(size, stop - start);
                 return;
             }
             long stop = System.nanoTime();

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Main {
-    public static final long EXPERIMENT_TIME = 60000;
+    public static final long EXPERIMENT_TIME = 30000;
     public static final int[] MAX_OBJECT_SIZES = {1000, 10000, 100000};
     public static final int[] PRODUCER_COUNT = {10, 100, 1000};
     public static final int[] CONSUMER_COUNT = PRODUCER_COUNT;
@@ -15,9 +15,9 @@ public class Main {
             new Buffer(MAX_OBJECT_SIZES[0] * 2),
             new Buffer(MAX_OBJECT_SIZES[1] * 2),
             new Buffer(MAX_OBJECT_SIZES[2] * 2),
-            new BufferFairMy(MAX_OBJECT_SIZES[0] * 2),
-            new BufferFairMy(MAX_OBJECT_SIZES[1] * 2),
-            new BufferFairMy(MAX_OBJECT_SIZES[2] * 2),
+            new BufferFairMy2(MAX_OBJECT_SIZES[0] * 2),
+            new BufferFairMy2(MAX_OBJECT_SIZES[1] * 2),
+            new BufferFairMy2(MAX_OBJECT_SIZES[2] * 2),
             new BufferFairBook(MAX_OBJECT_SIZES[0] * 2),
             new BufferFairBook(MAX_OBJECT_SIZES[1] * 2),
             new BufferFairBook(MAX_OBJECT_SIZES[2] * 2)
@@ -66,6 +66,7 @@ public class Main {
             fileWriter.write(producerStatCollector.toString());
             fileWriter.write(consumerStatCollector.toString());
             fileWriter.close();
+            System.out.println("Wrote "+e.getKey());
         }
     }
 }
